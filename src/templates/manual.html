@@ -1,0 +1,207 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ block.super }}Manuale{% endblock %}
+
+{% block navbar-left %}
+  {% include "_navbar.html" with active_link="manual" %}
+{% endblock %}
+
+{% block extrahead%}
+	{{block.super}}
+	<style>
+		div.gallery {
+		  border: 1px solid #ccc;
+		}
+		
+		div.gallery:hover {
+		  border: 1px solid #777;
+		}
+		
+		div.gallery img {
+		  width: 100%;
+		  height: auto;
+		}
+		
+		div.desc {
+		  padding: 15px;
+		  text-align: center;
+		}
+		
+		* {
+		  box-sizing: border-box;
+		}
+		
+		.responsive {
+		  padding: 0 6px;
+		  float: left;
+		  width: 24.99999%;
+		}
+		
+		@media only screen and (max-width: 700px) {
+		  .responsive {
+			width: 49.99999%;
+			margin: 6px 0;
+		  }
+		}
+		
+		@media only screen and (max-width: 500px) {
+		  .responsive {
+			width: 100%;
+		  }
+		}
+		
+		.clearfix:after {
+		  content: "";
+		  display: table;
+		  clear: both;
+		}
+		</style>	
+{% endblock %}
+
+{% block container %}
+<div class="text-page page-header">
+  <h1><a href="/">Il Manuale</a></h1>
+</div>
+
+<div class="text-page">	
+  <div class="container">
+	<div class="row">
+		<div class="responsive">
+			<div class="gallery">
+			  <a target="_blank" href="https://savetheprince.net/media/infografiche/come_comportrsi_in_strada.png">
+				<img src="https://savetheprince.net/media/infografiche/come_comportrsi_in_strada.png" alt="Come comportarsi in strada" width="600" height="400">
+			  </a>
+			  <div class="desc">Come comportarsi in strada</div>
+			</div>
+		  </div>	  		
+		<div class="responsive">
+			<div class="gallery">
+			  <a target="_blank" href="https://savetheprince.net/media/infografiche/rilevamento_dati.png">
+				<img src="https://savetheprince.net/media/infografiche/rilevamento_dati.png" alt="Rilevamento dati" width="600" height="400">
+			  </a>
+			  <div class="desc">Come rilevare i dati</div>
+			</div>
+		</div>	  		
+		<div class="responsive">
+			<div class="gallery">
+			  <a target="_blank" href="https://savetheprince.net/media/infografiche/maschio_o_femmina.png">
+				<img src="https://savetheprince.net/media/infografiche/maschio_o_femmina.png" alt="Maschio o femmina?" width="600" height="400">
+			  </a>
+			  <div class="desc">Maschio o femmina?</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">		
+
+		<div class="responsive">
+			<div class="gallery">
+			  <a target="_blank" href="https://savetheprince.net/media/infografiche/dotazione.png">
+				<img src="https://savetheprince.net/media/infografiche/dotazione.png" alt="Dotazione" width="600" height="400">
+			  </a>
+			  <div class="desc">Dotazione del rospista</div>
+			</div>
+		</div>
+
+		<div class="responsive">
+			<div class="gallery">
+			  <a target="_blank" href="https://savetheprince.net/media/infografiche/diventare_volontario.png">
+				<img src="https://savetheprince.net/media/infografiche/diventare_volontario.png" alt="Diventare volontario" width="600" height="400">
+			  </a>
+			  <div class="desc">Come diventare volontari</div>
+			</div>
+		</div>	  		
+		<div class="responsive">
+			<div class="gallery">
+			  <a target="_blank" href="https://savetheprince.net/media/infografiche/come_si_maneggiano.png">
+				<img src="https://savetheprince.net/media/infografiche/come_si_maneggiano.png" alt="Cinque Terre" width="600" height="400">
+			  </a>
+			  <div class="desc">Come maneggiare gli animali</div>
+			</div>
+		</div>	
+	</div>
+    <div class="row">
+	Il presente documento riassume delle linee guida utili ad organizzare un’attività di salvataggio degli anfibi durante i periodi di migrazione (primavera per la migrazione verso i siti riproduttivi) per popolazioni particolarmente impattate dal traffico autoveicolare (<em>roadkilling</em>).
+	<h3>Perchè</h3>
+	<p>
+	L’obiettivo del salvataggio è la minimizzazione della mortalità degli anfibi causata dal traffico veicolare, che è particolarmente intensa soprattutto vicino ad arterie stradali prossime a stagni e spechi d’acqua.  In concomitanza con l’attività di salvataggio, il conteggio degli individui salvati e delle vittime di schiacciamenti permette una valutazione rigorosa dell’andamento delle popolazioni, utile a difendere ulteriormente la necessità di interventi tempestivi e permanenti (rospidotti, ponti verdi, chiusura al traffico, etc...) sui siti coinvolti. L’attività di salvataggio è infatti da intendersi come azione temporanea utile a tamponare un’emergenza, che dovrebbe essere permanentemente risolta ricostruendo la connettività ecologica interrotta dai tratti stradali.
+	</p>
+	<h3>Come</h3>
+	<p>
+	Il salvataggio degli anfibi avviene semplicemente coadiuvando lo spostamento degli stessi da un lato all’altro delle strade, minimizzandone il tempo di permanenza (e quindi, il rischio di schiacciamento) sul manto stradale e facendo particolare attenzione a spostare gli anfibi verso la direzione che loro stessi avevano preso, soprattutto nei siti dove le migrazioni di andata e ritorno si sovrappongono.
+	</p>
+	<h3>Attrezzatura</h3>
+	<p>
+
+	La sicurezza del volontario è prioritaria: consigliamo la lettura dell’ottimo "<a href="http://www.sosanfibi.it/vademecum-del-rospista/">Vademecum del Rospista</a>" redatto dall’Associazione SOS Anfibi per conoscere quanto è necessario mettere in campo durante le operazioni di salvataggio.
+	Riassumendo, è importante avere sempre con sè:
+	<ul>
+		<li>giubbottino catarifrangente ad alta visibilità, dato che i salvataggi avvengono in gran parte nelle ore serali e su strada;</li>
+		<li>potente lampada frontale, in modo da lasciar libere ambo le mani;</li>
+		<li>guanti in HDPE (polietilene ad alta densità: i guanti usa e getta del reparto ortofrutta dei supermercati sono ideali) protettivi da usare durante la manipolazione degli animali -che in ogni caso deve essere ridotta al minimo-, per non danneggiare la cute degli anfibi trasportati ed impedire il passaggio di eventuali agenti patogeni. Particolare attenzione va posta al materiale dei guanti stessi: evidenze sperimentali suggeriscono che <a href="https://www.conservationevidence.com/actions/769" target='_blank'>guanti in lattice, in nitrile e in polivinilcloruro</a> <a href="https://www.conservationevidence.com/individual-study/4849" target='_blank'>siano particolarmente nocivi, in particolare per i girini e le ovature</a>;</li>
+		<li>un secchio capiente all’interno del quale depositare gli anfibi durante i passaggi su strada;</li>
+		<li>adeguato abbigliamento a seconda delle condizioni meteorologiche;</li>
+		<li>taccuino su cui segnare i dati relativi al salvataggio effettuato o smartphone con apposita app installata.</li>
+	</ul>
+	<h4>Disinfezione dell'attrezzatura</h4>
+	È inoltre necessario disinfettare accuratamente tutta l’attrezzatura una volta terminato il salvataggio, soprattutto se con la stessa si intende coprire più siti (nella stessa notte o in notti diverse). Il rischio di contaminazione da parte di funghi e virus, entro una popolazione o tra popolazioni, è molto concreto: i volontari rischiano infatti di aumentare la capacità di diffusione di malattie tenendo nello stesso secchio animali malati e animali sani. La chitridiomicosi in particolare è una malattia fungina diffusa ormai a livello planetario, che ha causato perdite enormi e pure <a href="http://www-3.unipv.it/webshi/images/files/Allegato%20-%20Pub.%20Occhio%20alla%20spora.pdf">l’estinzione</a> di alcune popolazioni di anfibi
+	La disinfezione può avvenire tramite <a href="http://www.northeastparc.org/products/pdfs/NEPARC_Pub_2014-02_Disinfection_Protocol.pdf">uno o più di questi metodi</a>:
+	<ul>
+		<li>lasciar <strong>seccare completamente</strong> materiale e scarpe (attenzione, anche il fango depositato sulle suole deve essiccare totalmente);</li>
+		<li><strong>riscaldamento</strong> (5 min. a 60° C sono sufficienti);</li>
+		<li><strong>disinfezione diretta</strong>: ad esempio, con della candeggina non diluita o dell’alcool a 70° (attenzione allo smaltimento di tali sostanze)
+	</ul>
+	</p>
+	<h3>Rilevamento dati</h3>
+	<p>
+	Il rilevamento richiede al meglio il conteggio degli animali morti e/o di quelli spostati (“salvati”), suddivisi in maschi, femmine ed indeterminati (nel caso non si sia in grado di determinare il sesso) per ogni specie, assieme al tempo di residenza dei volontari nel sito. Inoltre, una volta frequentata la località per una certa notte, è bene ricontrollarla almeno per altre due notti successive, indipendentemente dalle condizioni meteo (ovvero: sono ideali salvataggi effettuati in notti successive l’una all’altra, piuttosto che notti sparpagliate nel tempo).
+	Sono quindi da riportare, per ogni notte di salvataggio e per ogni specie:
+	<ul>
+		<li>nome del sito di salvataggio;</li>
+		<li>nome e cognome di ogni volontario coinvolto durante la serata;</li>
+		<li>ora d’inizio e ora di fine dell’attività;</li>
+		<li>numero di morti (maschi, femmine, non determinati);</li>
+		<li>numero di salvati (maschi, femmine, non determinati);</li>
+		<li>direzione dei salvati;</li>
+		<li>condizioni meteo al momento del salvataggio: nuvoloso, sereno, pioggia, nebbia;</li>
+		<li>temperatura rilevata in loco o estrapolata a posteriori dalle centraline meteo gestite dai servizi meteorologici locali</li>
+	</ul>
+	</p>
+	<h4>Digitalizzazione</h4>
+	<p>
+	Al fine di memorizzare i dati di cui sopra, ai volontari vengono messi a disposizione svariati metodi, da usare a seconda delle preferenze:
+	<ul>
+		<li>un form da compilarsi online, differenziato da regione a regione, al quale il volontario richiede l’accesso al responsabile dei salvataggi per la sua zona;</li>
+		<li>una tabella cartacea, scansione compilata della quale va restituita sempre al responsabile regionale dei salvataggi o all’eventuale assistente che digitalizza i dati.</li>
+	</ul>
+	Per la segnatura dei dati sul campo, si consiglia di utilizzare un piccolo quadernetto provvisto di matita per evitare che l’inchiostro della penna si sparga con l’umidità. Ognuno può organizzarsi al meglio una tabella per rendere quanto più facile possibile il conteggio finale dei dati. In alternativa, si può usare l’applicazione <a href="https://play.google.com/store/apps/details?id=de.sleak.thingcounter&hl=en" target='_blank'>Thing Counter</a> o <a href="https://itunes.apple.com/us/app/tally-counters/id635621421?mt=8
+" target='_blank'>Tally Counter</a>.
+	</p>
+	<h3>Accorgimenti</h3>
+	<p>
+	<ol>
+		<li>Per ottimizzare l’attività si consiglia in ogni caso di concentrare l’impegno attorno (qualche giorno prima e qualche giorno dopo) a giornate calde (>10°C) e piovose, ove la probabilità di rinvenire anfibi è massima;</li>
+		<li>A meno che l’urgenza non lo richieda, evitare di colmare il secchio di individui: al contrario, svuotarlo regolarmente e frequentemente, per evitare di sottoporre ad eccessivo stress gli animali prelevati. In particolare nel caso si stiano maneggiando rane in genere, che sono più delicate e sensibili del rospo comune.</li>
+		<li>Si ricorda che gli anfibi sono animali a sangue freddo, e come tali mal sopportano lo sbalzo di temperatura indotto dalle mani di chi li preleva, per questo si deve ridurre al minimo la manipolazione degli individui, limitandola al tempo necessario per la determinazione del sesso. Gli individui maschio, in molte specie, presentano degli evidenti calli nuziali e gracidano, inoltre hanno in genere dimensioni più piccole rispetto alle femmine della medesima specie.</li>
+		<li>Mettere la propria sicurezza al centro dell’attività: evitare d’inerpicarsi su scarpate, rendere sempre il più possibile evidente la propria presenza (evitando di abbagliare i guidatori con la luce frontale), fermare l’attività di salvataggio durante il passaggio degli autoveicoli.</li>
+		<li>In numerosi siti, le migrazioni verso i siti riproduttivi e di ritorno verso i siti di rifugio avvengono contemporaneamente: vi saranno quindi momenti dell’anno in cui si hanno individui differenti transitanti in direzioni opposte. A tale direzione si deve ovviamente prestare la massima attenzione, cercando di interpretare e quindi di assecondare i desideri dell’esemplare da mettere in sicurezza. Questa capacità di interpretare il movimento dell’animale si acquisisce con l’esperienza, ma in generale si può dire che le femmine che hanno già deposto sono molto più snelle di come erano gravide. I maschi invece tendono a perdere i calli nuziali: questi ultimi diminuiscono le dimensioni e/o perdono il colore (per il rospo comune da neri diventano marroni) </li>
+	</ol>
+	</p>
+	<h3>Varie</h3>
+	<p>
+	Le operazioni di salvataggio sono, come ogni attività di campo, un’attività minimamente rischiosa: i volontari si assumono, compilando e restituendo firmato, al referente di zona, il modello in allegato, la responsabilità delle loro azioni.
+	</ol>
+	</p>
+	<h3>Allegati</h3>
+	<ul>
+		<li><a href="{{MEDIA_URL}}docs/A1.pdf" target='_blank'>Esempio di tabella di rilevamento</a></li>
+		<li><a href="{{MEDIA_URL}}pdf_importanti/dichiarazione_responsabilita_salvataggio_wwf.pdf" target='_blank'>Modello di dichiarazione responsabilità</a></li>
+		<li><a href="{{MEDIA_URL}}docs/A3.pdf" target='_blank'>Procedure di disinfezione dell'attrezzatura</a></li>
+		<li><a href="{{MEDIA_URL}}pdf_importanti/savetheprince_manual.pdf" target='_blank'>Questo manuale, in formato .pdf</a></li>
+	</ul>
+    </div>
+  </div>
+</div>
+{% endblock %}

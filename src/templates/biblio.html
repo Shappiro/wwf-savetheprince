@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ block.super }}Bibliografia{% endblock %}
+
+{% block navbar-left %}
+  {% include "_navbar.html" with active_link="contribute" %}
+{% endblock %}
+
+
+{% block container %}
+<div class="text-page page-header">
+  <h1><a href="/">Bibliografia</a></h1>
+</div>
+
+<div class="text-page">
+  <div class="container">
+    <div class="row">
+      <ul>
+        <li> <a href="https://savetheprince.net/media/pdf_importanti/savetheprince_manual.pdf"> Manuale di salvataggio anfibi progetto <em>Save the Prince</em></a></li>
+
+        <li>WWF Trentino, 2019. <a href="https://savetheprince.net/media/pdf_importanti/progetto_salvataggio_anfibi_2019_wwf_tn.pdf">Presentazione progetto di salvataggio anfibi</a> </li>
+
+        <li><a href="https://www.researchgate.net/publication/272094229_Si_fa_presto_a_dire_rana_booklet_about_frogs_and_toads_from_north_eastern_Italy" target='_blank'>Si fa presto a dire rana (Lapini L., 2005)</a>: una panoramica di rane e rospi del Nord Italia, compreso di aiuti all'identificazione</li>
+        
+        <li>Rondinini, C., Battistoni, A. Peronace, V. e Teofili, C. (compilatori). 2013. <a href="https://savetheprince.net/media/pdf_importanti/comitato_iucn_lista_rossa_dei_vertebrati_italiani.pdf" target='_blank'>Lista Rossa IUCN dei Vertebrati Italiani</a>. Comitato Italiano IUCN e Ministero dell’Ambiente e della Tutela del Territorio e del Mare, Roma.</li>
+
+        <li>The starting point for conservation actions. <a href="https://www.iucn.org/iucn-red-list-threatened-species-test-single-page" target='_blank'>The IUCN Red List of Threatened Species</a>. 2015.</li>
+
+        <li>Romanazzi, E., Brambilla, M., Menegon, M., Pedrini, P. 2014. <a href="https://savetheprince.net/media/pdf_importanti/lifeten_a8_lineeguida_anfibi.1453911693.pdf" target='_blank'>Linee guida per la conservazione di specie focali di interesse comunitario - Anfibi</a>. LIFE+T.E.N. - Azione A8, 23 pp.</li>
+
+        <li>Romanazzi, R., Pedrini, P. 2013. <a href="https://savetheprince.net/media/pdf_importanti/investimenti_anfibi_tn_low.pdf">Migrazione degli Anfibi: barriere stradali e via di attraversamento. Stato di fatto, problematiche e possibili soluzioni</a>. MUSE - Museo delle Scienze, pp. 91.</li>
+
+        <li>Giovine, G., Corbetta, A. <a href="https://savetheprince.net/media/pdf_importanti/manuale__salvataggi_anfibi_lombardia.pdf">Manuale Salvataggio Anfibi - Lombardia</a> </li>
+        
+        <li>Dinetti, M. (a cura di). 2008. Infrastrutture di trasporto e biodiversità: lo stato dell’arte in Italia. Il problema della frammentazione degli habitat causata da autostrade, strade, ferrovie e canali navigabili. IENE Infra-Eco-Network-Europe, Sezione Italia.</li>
+
+        <li>Ferri, V. 1999. <a href="https://savetheprince.net/media/pdf_importanti/anfibi-pngsl.pdf">Rilevamento di specie di Anfibi minacciate (<em>Speleomantes italicus</em>, <em>Salamandra salamandra gigliolii</em>,<em> Salamandrina terdigitata</em>, <em>Bombina pachypus</em>) nel Parco Nazionale del Gran Sasso e Monti della Laga. Indicazioni per la conservazione.</a></li>
+
+        <li>WWF. 2018. <a href="https://www.wwf.it/il_pianeta/sostenibilita/one_planet_economy/living_planet_report_2018/" target='_blank'>Living planet report</a></li>        
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}

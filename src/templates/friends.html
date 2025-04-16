@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ block.super }}Amici{% endblock %}
+
+{% block navbar-left %}
+  {% include "_navbar.html" with active_link="friends" %}
+{% endblock %}
+
+
+{% block container %}
+<div class="text-page page-header">
+  <h1><a href="/">I nostri amici</a></h1>
+</div>
+
+
+<div class="text-page">
+    <div class="container">
+        <div class="row">
+        {% for specie in beasts %}
+        <div class="col-lg-4">
+            <div class="text-center"><img src="{% if specie.specieimages.first.image.url %}{{specie.specieimages.first.image.url}}{% else%}{% get_media_prefix %}default_profile.png {% endif%}" class="img-circle centered" width="250" height="250" alt="Immagine rappresentativa di {{specie.vernacular_it}}">
+            <p><h5 class="heavy text-center"><strong>{% if specie.description%}<a href="#modal_{{specie.name_lower}}" data-toggle="modal">{%endif%}{{specie.vernacular_it}}{% if specie.description%}</a>{%endif%}</strong></h5>
+            </div>
+        </div>
+            <!-- Modal -->
+        <div id="modal_{{specie.name_lower}}" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">{{specie.vernacular_it}}</h4>
+                    <h5 class="modal-title"><em>{{specie.specie}}</em></h5>
+                </div>
+                <div class="modal-body">
+                    <!--<img src="{% get_media_prefix %}{{admin.picture}}" aligh="right" class="img-circle centered" width="80" height="80" alt="profile pic"> -->
+                    {{specie.description|safe}}
+                    {% if specie.specieimages.all|length > 1 %}
+                    <div class="row">
+                    {% for image in specie.specieimages.all %}
+                    <div class="col-lg-4 text-center"><img src="{% if image.url %}{{image.url}}{% else%}{% get_media_prefix %}default_profile.png {% endif%}" class="img-circle centered" width="150" height="150" alt="{{image.author}}">
+                    <p><small><em>{{image.author}}</em></small></p>
+                    </div>
+                    {%endfor%}
+                    </div>
+                    {%else%}
+                    <div class="text-center"><img src="{% if specie.specieimages.first.image.url %}{{specie.specieimages.first.image.url}}{% else%}{% get_media_prefix %}default_profile.png {% endif%}" class="img-circle centered" width="150" height="150" alt="{{specie.specieimages.first.author}}">
+                    <p><small><em>{{specie.specieimages.first.author}}</em></small></p>
+                    </div>
+                    {%endif%}
+                    {% if specie.speciedocs.all|length > 0 %}
+                    <h5 class="modal-title">Documenti utili</h5>
+                    <ul>
+                    {%for doc in specie.speciedocs.all%}
+                    <li><a target="_blank" href="{{doc.doc.url}}">{{doc.title }}{%if doc.type%}({{doc.type}}){%endif%}</a></li>
+                    {%endfor%}
+                    </ul>
+                    {%endif%}
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
+                </div>
+            </div>
+            </div>
+        </div>
+        {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock container %}

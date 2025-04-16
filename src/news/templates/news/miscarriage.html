@@ -1,0 +1,20 @@
+<!-- Wanted to add a map for every news with the site location, but no way -->
+				<p>
+					{% with new.id as maptitle %}
+					    {% with y=forloop.counter|stringformat:"s" %}
+					    {% with template="mod"|add:y %}
+							{% leaflet_map maptitle callback=template %}
+					    {% endwith %}
+					    {% endwith %}
+					{% endwith %}
+					<script>
+						function {% with y=forloop.counter|stringformat:"s" %}{% with template="mod"|add:y %}{{ template|add:"(map, options)" }}{% endwith %}{% endwith %}{
+						    $.getJSON('{% url "site_gjson" %}', function (data) {
+						        L.geoJson(data,{filter: siteFilter}).addTo({{ maptitle }});
+						    });
+						}
+						function siteFilter(feature) {
+					  		if (feature.properties.id === "{{ new.site_id|stringformat:"s" }}") return true
+						}
+					</script>
+				</p>

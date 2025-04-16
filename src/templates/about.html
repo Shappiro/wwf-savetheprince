@@ -1,0 +1,210 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+{% load thumbnail %}
+
+{% block title %}{{ block.super }}About{% endblock %}
+
+{% block navbar-left %}
+  {% include "_navbar.html" with active_link="about" %}
+{% endblock %}
+
+
+{% block container %}
+<div class="text-page page-header">
+  <h1><a href="/">Chi siamo</a></h1>
+</div>
+
+
+<div class="text-page">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <h2><a id="associations"></a>Le Associazioni</h2>
+      </div>
+    </div>
+    </br>
+    </br>
+    <div class="row">
+      {% for association in associations %}
+      <div class="col-lg-3">
+        <div class="text-center"><img src="{% get_media_prefix %}{{association.image}}" class="img-circle centered" width="150" height="150" alt="profile pic">
+        <p><h5 class="heavy text-center"><strong><a href="#modal_{{association.name_lower}}" data-toggle="modal">{{association.name}}</a></strong></h5></p>
+        </div>
+      </div>
+        <!-- Modal -->
+      <div id="modal_{{association.name_lower}}" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">{{association.name}}</h4>
+            </div>
+            <div class="modal-body">
+              <!--<img src="{% get_media_prefix %}{{admin.picture}}" aligh="right" class="img-circle centered" width="80" height="80" alt="profile pic"> -->
+              <p>{{association.descrizione|safe}}</p>
+              {% if association.email != None %}
+              Mail: <a href="mailto:{{association.email}}">{{association.email}}</a>
+              {% endif %}
+              </br>
+              </br>
+              {% if association.website != None %}
+              <a href="{{association.website}}" target='_blank'><i class="fa fa-globe fa-2x"></i></a>
+              {% endif %}
+              {% if association.facebook != None %}
+              <a href="{{association.facebook}}" target='_blank'><i class="fa fa-facebook fa-2x"></i></a>
+              {% endif %}
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      {% endfor %}
+    </br>
+    </br>
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <h2><a id="reference"></a>I referenti</h2>
+      </div>
+    </div>
+    </br>
+    </br>
+    {% regroup admins  by province as admin_list %}
+    {% for adm in admin_list %}
+    <div class="col-md-12 text-center">
+    <h3><a id="reference_prov"></a>{{adm.grouper}}</h3>
+    </div>    
+    <div class="row">
+        {% for admin in adm.list %}
+        <div class="col-lg-4">
+        <div class="text-center"><img src="{% get_media_prefix %}{% if admin.picture %}{{admin.picture}}{% else%}default_profile.png {% endif%}" class="img-circle centered" width="150" height="150" alt="profile pic">
+        <p><h5 class="heavy text-center"><strong><a href="#modal_{{admin.name_lower}}" data-toggle="modal">{{admin.user.name}}</a></strong></h5>
+        <!--<h6>{% if admin.user.profile.province %}{{admin.user.profile.province}}{% else %} - {% endif %}</h6> -->
+        <h6>{% if admin.user.profile.role_descr %}{{admin.user.profile.role_descr}}{% else %} {{admin.user.profile.role}} {% endif %}</h6>
+    
+        {% comment %}<h6><a href="mailto:{{admin.user.email}}?subject=Volontariato per il Progetto Save the Prince&body=Salve,\n vorrei avere maggiori informazioni riguardo il Progetto Save the Prince!"
+        >{{admin.user.email}}</a></h6></p>{% endcomment %}
+        </div>
+      </div>
+      <!-- Modal -->
+      <div id="modal_{{admin.name_lower}}" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+          <!-- Modal content-->
+          <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">{{admin.user.name}}</h4>
+            <!--<h5 class="modal-title">{{admin.role}}</h5>-->
+          </div>
+          <div class="modal-body">
+            {% if admin.user.profile.role_descr %}<p><strong>{{admin.user.profile.role_descr}}</strong></p>{%endif%}
+            <!--<img src="{% get_media_prefix %}{{admin.picture}}" aligh="right" class="img-circle centered" width="80" height="80" alt="profile pic"> -->
+            {{admin.bio|safe}}
+            <ul>
+            {% if admin.user.profile.mail_show%}
+            <li>Mail: <a href="{{admin.user.email }}">{{admin.user.email}}</a>
+            {% else %}
+            <li>Mail: <a href="{{admin.user.profile.association.email }}">{{admin.user.profile.association.email}}</a>
+    
+            {% endif %}
+            </ul>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
+          </div>
+          </div>
+    
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endfor %}    <!-- /Modal -->
+    <!--
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <h2><a id="volunteers"></a>I volontari</h2>
+      </div>
+    </div>
+    <div class="row">
+      {% for volunteer in volunteers %}
+      <div class="col-lg-2">
+        <div class="text-center"><img src="{% get_media_prefix %}{% if volunteer.picture %}{{volunteer.picture}}{% else%}default_profile.png {% endif %}" class="img-circle centered" width="150" height="150" alt="Immagine di profilo della/o volontaria/o {{volunteer.user.name}}">
+        <p><h5 class="heavy text-center"><strong>{% if volunteer.bio %}<a href="#modal_{{volunteer.name_lower}}" data-toggle="modal">{%endif%}{{volunteer.user.name}}{%if volunteer.bio %}</a>{%endif%}</strong></h5>
+        </div>
+      </div>
+      <div id="modal_{{volunteer.name_lower}}" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">{{volunteer.user.name}}</h4>
+            </div>
+            <div class="modal-body">
+              {{volunteer.bio|safe}}
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
+            </div>
+          </div>
+
+        </div>
+      </div>      
+      {% endfor %}
+    </div> -->
+    </div>
+    </div>
+  </div>
+</div>
+
+<!--<div id="sec3">
+  <div class="container">
+    <div class="row">
+      <div id="map-outer" class="col-md-12">
+        <div id="address" class="col-md-4">
+          <h2>Dove siamo</h2>
+          <address>
+            <strong>Associazione per il WWF Trentino</strong><br>
+            Via Fratelli Bronzetti 29<br>
+            38122, Trento (TN)<br>
+            <abbr>mail:</abbr> <a href="mailto:trentino@wwf.it">trentino -at- wwf.it </a> 
+          </address>
+        </div>
+        <div id="map-container" class="col-md-8"></div>
+      </div>
+    </div>
+  </div>
+</div> -->
+{% endblock container %}
+
+{% block scripts %}
+<!--  <script src="http://maps.google.com/maps/api/js?key=AIzaSyCyHd2q1DERzogtGAIGnXLcP0XhyHidxVo"></script>
+  <script>
+
+   function init_map() {
+     // Enter the latitude and longitude of your office here
+	 var myLocation = new google.maps.LatLng(46.0586721,11.1219038);
+
+     var mapOptions = {
+          center: myLocation,
+          zoom: 15
+     };
+
+	 var marker = new google.maps.Marker({
+	   position: myLocation,
+	   title:"Eccoci!"});
+
+     var map = new google.maps.Map(document.getElementById("map-container"),
+                                   mapOptions);
+	 marker.setMap(map);
+   }
+
+   google.maps.event.addDomListener(window, 'load', init_map);
+  </script> -->
+{% endblock scripts %}

@@ -1,0 +1,387 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load static %}
+
+{% block extrahead %}
+    {{ block.super}}
+    <style>
+        @media print
+        {    
+            .noprint
+            {
+                display: none !important;
+            }
+        }        
+    </style>
+    <link href="{% static 'site/css/gallery.css' %}" rel="stylesheet">   
+{% endblock%}
+{% block title %}{{ block.super }}Report {{report.year}} - sito {{report.site.name}}{% endblock %}
+
+{% block navbar-left %}
+  {% include "_navbar.html" %} <!-- with active_link="graphs" --> 
+{% endblock %}
+
+{% block container %}
+<div class="text-page page-header">
+	<h1><a href="/">Report {{report.year}} - sito {{report.site}}</a></h1>
+</div>
+<div class="text-page">
+   
+  <div class="col-lg-12">
+    <h3>Informazioni generali</h3>
+    <ul>
+        <li>Data di inizio dell'attività dei volontari: <strong>{{report.date_begin}}</strong></li>
+        <li>Data di fine dell'attività dei volontari: <strong>{{report.date_end}}</strong></li>
+        {% if report.date_barriers_begin%}
+        <li>Data di posa delle barriere: <strong>{{report.date_barriers_begin}}</strong></li>
+        <li>Data di rimozione delle barriere: <strong>{{report.date_barriers_end}}</strong></li>
+        {%endif%}
+        <li>Specie contattate:
+            {%for specie in report.contacted_species%} 
+            {%if forloop.last %}
+            <strong><em>{{specie}}</em></strong>
+            {%else%}
+            <strong><em>{{specie}}</em></strong>, 
+            {%endif%}
+            {%endfor%}
+        </li>
+        {%if report.species_sexratio %}
+        <li>
+            <em>Sex ratio</em> (F/M), andate:
+            <ul>
+            {% for key,value in report.species_sexratio.items %}
+                <li><em>{{key}}</em> - <strong>{{value}}</strong></li>
+            {% endfor %}
+            </ul>
+            
+            <small>Più grande il numero, maggiore il numero di femmine (se >1, più femmine che maschi)</small></br>
+            <small>Se una specie non compare significa che sono stati contati solo F, M o IND: di conseguenza il rapporto non è calcolabile</small>
+        </li>
+        {%endif%}
+        {% if report.giovani_count %}
+        <li>Giovani
+        <ul>
+            {% for key,value in report.giovani_count.items %}
+                <li><em>{{key}}</em> - <strong>{{value}}</strong></li>
+            {% endfor %}
+            </ul>        
+        {% endif %}
+        </li>
+        <li>Numero volontari anche ripetuti: <strong>{{report.volunteers_count}}</strong></li>
+        <li>Numero volontari attivi: <strong>{{report.volunteers_single_count}}</strong></li>
+        <li class="noprint">Nome volontari attivi: <strong>{{report.volunteers_names}}</strong></li>
+
+        <li>Numero uscite: <strong>{{report.sessions_count}}</strong></li>
+    </ul>
+  </div>
+</div>
+
+<div class="text-page">
+    <div class="col-lg-12">
+        <h3>Descrizioni dettagliate</h3>
+        <ul>
+            {% if report.andamento %}
+            <li><strong>Andamento generale della migrazione</strong>{{report.andamento|linebreaks}}</li>
+            {% endif %}
+
+            {% if report.problematiche %}
+            <li><strong>Problematiche</strong>{{report.problematiche|linebreaks}}</li>
+            {% endif %}
+
+            {% if report.note_sito %}
+            <li><strong>Note generali</strong>{{report.note_sito|linebreaks}}</li>
+            {% endif %}
+
+            {% if report.note_traffico %}
+            <li><strong>Traffico</strong>{{report.note_traffico|linebreaks}}</li>
+            {% endif %}
+
+            {% if report.note_fauna %}
+            <li><strong>Fauna</strong>{{report.note_fauna|linebreaks}}</li>
+            {% endif %}
+
+            {% if report.note_altro %}
+            <li><strong>Altro</strong>{{report.note_altro|linebreaks}}</li>
+            {% endif %}
+
+            {% if report.note_riservate %}
+            <li class="noprint"><strong>Note riservate</strong>{{report.note_riservate|linebreaks}}</li>
+            {% endif %}
+        </ul>
+    </div>
+
+<div class="container">
+
+    <div class="row text-center">
+        <h3>Andamento della migrazione per specie nei giorni ({{report.year}})</h3>
+    </div>
+    <div class="row">
+    {% for specie,specie_formatted in report.contacted_species_formatted%}
+    <div id="migration_{{specie_formatted}}" class="col-md-4 col-sm-4 col-print-4 text-center">
+        <h5><em>{{specie}}</em></h5>
+        <canvas id="chart_{{specie_formatted}}" width="10em" height="10em"></canvas>                
+    </div>
+    {% endfor %}
+    </div>
+
+    <div class="row text-center">
+        <h3>Andamenti vivi e morti</h3>
+    </div>
+    <div class="row" id="siteresult">
+        <!-- <div id='loader-siteresult' class="lds-dual-ring hidden overlay"></div> -->
+        {% for specie,specie_formatted in report.contacted_species_formatted%}
+        <div class="col-md-4 col-sm-4 col-print-4 text-center">
+            <h5><em>{{specie}}</em></h5>
+            <canvas id="chart_siteresult_{{specie_formatted}}" width="100" height="100"></canvas>                
+        </div>
+        {%endfor%}
+    </div>
+    <div class="row text-center">
+        <h3>Andamenti andate e ritorni</h3>
+    </div>
+    <div class="text-center text-page" id="siteresultfull">
+        <!--<div id='loader-siteresultfull' class="lds-dual-ring hidden overlay"></div> -->
+        {% for specie,specie_formatted in report.contacted_species_formatted%}
+        <div class="col-md-4 col-sm-4 col-print-4 text-center">
+            <h5><em>{{specie}}</em></h5>
+            <canvas id="chart_siteresultfull_{{specie_formatted}}" width="100" height="100"></canvas>                
+        </div>
+        {%endfor%}                        
+    </div>
+</div>
+
+<div class="container">
+    <div class="row text-center" id="siteeffort">
+        <div class="text-center">
+            <h3>Sforzo</h3>
+            Lo sforzo è la somma giornaliera, per tutti i volontari, dei minuti impiegati da ciascun volontario sul sito
+        </div>
+
+        <div class="col-md-1"></div>
+        <div class="col-md-10 text-center">
+            <canvas id="chart_effort" width="300" height="100"></canvas>                
+        </div>
+        <div class="col-md-1"></div>        
+    </div>    
+</div>
+
+    {% if report.yearlyreportimages.all %}
+    <div class="text-page">
+        <div class="container">
+            <div class="gallery">
+                {% for image in report.yearlyreportimages.all %}
+                {% if image.url %}
+                <figure>
+                    <img src="{{image.url}}"/>
+                    <figcaption>
+                        <p>{{image.descr}} {% if image.author %} (ph. {{image.author}} ){% endif %}</p>
+                    </figcaption>
+                {% endif %}      
+                </figure>           
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if yearlyimages %}
+    <div class="text-page">
+        <div class="container">
+            <div class="gallery">
+                {% for image in yearlyimages %}
+                <figure>
+                    <img src="{{image.url}}"/>
+                    {% if image.descr %}
+                    <figcaption>
+                        <p>{{image.descr}} {% if image.author %} (ph. {{image.author}} ){% endif %}</p>
+                    </figcaption>
+                    {% endif %}      
+                </figure>           
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+
+{% endblock container %}
+
+{% block scripts %}
+    {{block.super}}
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+    {%for specie,specie_formatted in report.contacted_species_formatted%}
+    <script>
+
+    var dat;
+    var ctx_context_{{specie_formatted}} = document.getElementById("chart_{{specie_formatted}}").getContext('2d');
+    $.ajax({
+        method: "GET",
+        url: "{% url 'chart' %}?site={{report.site.name}}&year={{report.year}}&specie={{specie}}&format=json",
+        success: function(data){
+            data = data[0];
+            dat = data;
+            console.log(dat);
+            if (dat === undefined) {
+                document.getElementById("migration_{{specie_formatted}}").remove();
+                //document.getElementById("chart_{{specie_formatted}}").remove();
+            } else {
+                if( (
+                    dat["datasets"][0]["data"].reduce((a,b) =>a+b,0) + 
+                    dat["datasets"][1]["data"].reduce((a,b) =>a+b,0) + 
+                    dat["datasets"][2]["data"].reduce((a,b) =>a+b,0)
+                ) == 0) {
+                    document.getElementById("migration_{{specie_formatted}}").remove();
+                    //document.getElementById("chart_{{specie_formatted}}").remove();
+                } else {
+                    new Chart(
+                        ctx_context_{{specie_formatted}},
+                        {
+                            type: 'bar',
+                            data: data,
+                            options: {
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero:true,
+                                            callback: function(value) {if (value % 1 === 0) {return Math.round(value);}}
+                                        },
+                                        scaleLabel: {
+                                            display: true,
+                                            labelString: 'N. individui'
+                                        }                                                            
+                                    }], 
+                                    xAxes: [{
+                                        gridLines: {
+                                            lineWidth: 0,
+                                            color: "rgba(255,255,255,0)"
+                                        },
+                                        scaleLabel: {
+                                            display: true,
+                                            labelString: 'Giorno - Mese'
+                                        }
+                                    }]                         
+                                }
+                            }
+                        }
+                    );                
+                }                
+            }
+        },
+        error: function(error_data){
+            console.log(error_data);
+        }
+    }); 
+    </script>
+    {%endfor%}
+
+    <script>
+    // per specie, multianno
+    var site = "{{report.site.name}}";
+    {%for specie,specie_formatted in report.contacted_species_formatted%}
+    var ctx_context_siteresult_{{specie_formatted}} = document.getElementById("chart_siteresult_{{specie_formatted}}").getContext('2d');
+
+    $.ajax({
+        method: "GET",
+        url: "{% url 'chart-yearlydeadalivespecie' %}?site={{report.site.name}}&specie={{specie}}&format=json",
+        success: function(data){
+            new Chart(
+                ctx_context_siteresult_{{specie_formatted}},
+                {
+                    type: 'bar',
+                    data: data[0],
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero:true,
+                                    callback: function(value) {if (value % 1 === 0) {return Math.round(value);}}
+                                },
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'N. individui'
+                                }                                                            
+
+                            }],                          
+                        }
+                    }
+            });
+        },
+    });
+    {% endfor %}
+    </script>
+    <!-- per specie, multianno, con andate e ritorni-->
+    <script>
+    var site = "{{report.site.name}}";
+    {%for specie,specie_formatted in report.contacted_species_formatted%}
+    var ctx_context_siteresultfull_{{specie_formatted}} = document.getElementById("chart_siteresultfull_{{specie_formatted}}").getContext('2d');
+
+    $.ajax({
+        method: "GET",      
+        url: "{% url 'chart-yearlydirectionspecie' %}?site={{report.site.name}}&specie={{specie}}&format=json",
+        success: function(data){
+            new Chart(
+                    ctx_context_siteresultfull_{{specie_formatted}},
+                    {
+                        type: 'bar',
+                        data: data[0],
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero:true,
+                                        callback: function(value) {if (value % 1 === 0) {return Math.round(value);}}
+                                    },
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'N. individui'
+                                    }                                                            
+
+                                }],                          
+                            }
+                        }
+                }
+            );
+        },
+    });
+    {%endfor%}
+    </script>    
+    <script>
+    $.ajax({
+        method: "GET",
+        url: "{% url 'chart-effort' %}?site={{report.site.name}}&date_begin={{report.date_begin|date:'Y-m-d'}}&date_end={{report.date_end|date:'Y-m-d'}}&format=json",
+        success: function(data){
+            new Chart(
+            document.getElementById('chart_effort').getContext('2d'),
+            {
+                type: 'bar',
+                data: data[0],
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero:true,
+                                callback: function(value) {if (value % 1 === 0) {return Math.round(value);}}
+                            },
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Minuti'
+                            }                            
+                        }], 
+                        xAxes: [{
+                            gridLines: {
+                                lineWidth: 0,
+                                color: "rgba(255,255,255,0)"
+                            },
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Giorno - Mese'
+                            }                                                            
+                        }]                         
+                    }
+                }
+            });
+        }
+    });
+    </script>    
+{%endblock%}

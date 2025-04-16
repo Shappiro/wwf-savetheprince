@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ block.super }}Dicono di noi{% endblock %}
+
+{% block navbar-left %}
+  {% include "_navbar.html" with active_link="journals" %}
+{% endblock %}
+
+{% block styles %}
+    {{block.super}}
+    <link href="{% static 'site/css/gallery.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block container %}
+<div class="text-page page-header">
+  <h1><a href="/">Dicono di noi</a></h1>
+</div>
+
+
+<div class="text-page">
+    <div class="container">
+        <div class="gallery">
+            {% for journal in journals %}
+            <figure>
+                <a href="#modal_{{journal.pk}}" data-toggle="modal"><img src="{{journal.image.url}}" alt="{{journal.image.caption}}" /></a>
+                <figcaption>{% if journal.link %} <a href="{{journal.link}}" target='_blank'>{% endif%}{{journal.journal}} {% if journal.date %}({{journal.date}}){% if journal.link %}</a>{%endif%} {%endif %}</figcaption>            
+            </figure>           
+            {% endfor %}
+        </div>
+    </div>
+{% for journal in journals%}
+<div id="modal_{{journal.pk}}" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+
+    <!-- Modal content-->
+        <div class="modal-content" style="display:inline-block;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">{{journal.journal}}</h4>
+                {% if journal.date %}
+                <h5 class="modal-title"><em>{{journal.date}}</em></h5>
+                {%endif%}
+                {% if journal.link %}
+                <h5 class="modal-title"><a href="{{journal.link}}">Link all'articolo online</a></h5>
+                {%endif%}
+            </div>
+            <div class="modal-body">
+                <img src="{{journal.image.url}}" alt="{{journal.journal}} del {{journal.date}}" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div> 
+{%endfor%}
+</div>
+
+
+{% endblock container %}

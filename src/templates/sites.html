@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ block.super }}I siti di salvataggio{% endblock %}
+
+{% block navbar-left %}
+  {% include "_navbar.html" with active_link="sites" %}
+{% endblock %}
+
+{% block container %}
+<div class="text-page page-header">
+  <h1><a href="/">I siti di salvataggio</a></h1>
+</div>
+
+
+<div class="text-page">
+    {% for ordered_site in ordered_sites %}
+    <div class="container">
+        <div class="row">
+            <h3>{{ordered_site.province}}</h3>
+        </div>
+        <div class="row"> 
+            {% for site in ordered_site.sites %}
+                <div class="col-lg-4">
+                    <div class="text-center">
+                        <p>
+                        <a href="#" data-toggle="modal" data-target="#modal_{{site.name_lower}}">
+                        <h5 class="heavy text-center"><strong>{{site.name}}</strong></h5>
+                        </a>
+                        </p>
+                    </div>
+                </div>
+                <div class="modal" id="modal_{{site.name_lower}}" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">{{site.name}}</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                {% if site.descrizione %}
+                                {{site.descrizione|safe}}
+                                {% endif %}
+                                {% if site.widget%}
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        <iframe src="https://www.meteoblue.com/en/weather/widget/daily/{{site.widget|safe}}?geoloc=fixed&days=7&tempunit=CELSIUS&windunit=KILOMETER_PER_HOUR&precipunit=MILLIMETER&coloured=coloured&pictoicon=0&pictoicon=1&maxtemperature=0&maxtemperature=1&mintemperature=0&mintemperature=1&windspeed=0&windspeed=1&windgust=0&winddirection=0&uv=0&humidity=0&humidity=1&precipitation=0&precipitation=1&precipitationprobability=0&precipitationprobability=1&spot=0&pressure=0&layout=light"  frameborder="0" scrolling="NO" allowtransparency="true" sandbox="allow-same-origin allow-scripts allow-popups allow-popups-to-escape-sandbox" style="width: 300px; height: 300px"></iframe>
+                                    </div>
+                                </div>
+                                {% endif %}
+                                {% if site.images.1 %}
+                                <div class="row">
+                                    {% for image in site.images %}
+                                    <div class="col-md-4">
+                                        <div class="thumbnail">
+                                            <a target="_blank" href="{{image.url}}">
+                                                <img src="{{image.url}}" {% if image.author %}alt="ph. {{image.author}}" {% endif %} style="width:100%">
+                                                {% if image.author %}
+                                                <div class="caption">
+                                                <p>{% if image.typeimg %} {{image.typeimg}} / {% endif %}ph. {{image.author}}</p>
+                                                </div>
+                                                {% endif %}
+                                            </a>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                    {% if site.images.0 %}
+                                    <div class="col-md-4">
+                                        <div class="thumbnail">
+                                            <a target="_blank" href="{{image.url}}">
+                                                <img src="{{site.images.0.url}}" {% if site.images.0.author %} alt="{{site.images.0.author}}" {% endif %} style="width:100%">
+                                                {%if site.images.0.author %}
+                                                <div class="caption">
+                                                <p>{% if site.images.0.typeimg %} {{site.images.0.typeimg}} / {%endif%}ph. {{site.images.0.author}}</p>
+                                                </div>
+                                                {% endif %}
+                                            </a>
+                                        </div>
+                                    </div>                                    
+                                    {% endif %}
+                                {% endif %}
+                                {% if site.files or site.flyer_url %}
+                                <h5 class="modal-title">Documenti utili</h6>
+                                <div class="row">
+                                    <ul>
+                                    {%if site.flyer_url%}
+                                        <li><a target="_blank" href="{{site.flyer_url}}">Volantino avviso migrazione per il sito</a></li>
+                                    {%endif%}                                    
+                                    {% if site.files %}
+                                    {% for file in site.files %}
+                                        <li><a target="_blank" href="{{file.url}}">{{file.title }}{%if file.type%}({{file.type}}){%endif%}</a></li>
+                                    {% endfor %}
+                                    {%endif%}
+                                    </ul>
+                                </div>
+                                {% endif %}                   
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>                
+            {% endfor %}
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock container %}

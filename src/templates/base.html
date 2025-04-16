@@ -1,0 +1,147 @@
+{% load static thumbnail cookielaw_tags %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{% block description %}{% endblock description %}">
+    <meta name="author" content="Aaron Iemma">
+    <link rel="shortcut icon" href="{% static 'site/ico/favicon.ico' %}">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+    <title>{% block title %}{% include "_brandname.html" %} :: {% endblock %}</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Custom styles for this site -->
+    {% block styles %}
+    <link href="{% static 'site/css/main.css' %}" rel="stylesheet">
+    <link href="{% static 'cookielaw/css/cookielaw.css' %}" rel="stylesheet">
+    {% endblock styles %}
+
+    <!-- Custom tags for the head tag -->
+    {% block extrahead %}{% endblock extrahead %}
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+    {% block navbar %}
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Navigazione</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="{% url 'home' %}">
+            {% block navbar-brand %}
+              <img src="https://savetheprince.net/media/loghi/favicon/favicon-big-nero.png" style="max-width:30px;" alt="logo">
+              {% include "_brandname.html" %}
+            {% endblock %}
+          </a>
+        </div>
+        {% block navbar-menu %}
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            {% block navbar-left %}{% endblock %}
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            {% block navbar-right %}
+              {% if user.is_authenticated %}
+                {% if user.is_staff %}
+                <li><a href="{% url 'admin:observations_session_add' %}">Inserimento dati</a></li>
+                {% endif %}
+                <li>
+                  <a class="navbar-brand" href="{% url 'profiles:show_self' %}">
+                    {% thumbnail user.profile.picture "35x35" crop="center" as im %}
+                        <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+                    {% endthumbnail %}
+                  </a>
+                </li>
+                <li>
+                  <a href="{% url 'profiles:show_self' %}">{{ user.get_full_name|truncatechars:20 }}</a>
+                </li>
+              {% else %}
+                <p class="navbar-btn"><a class="btn btn-default" href="{% url 'accounts:login' %}" role="button">Login</a>
+                <a class="btn btn-success" href="{% url 'accounts:signup' %}" role="button">Registrati</a></p>
+              {% endif %}
+            {% endblock %}
+          </ul>
+          </ul>
+        </div><!--/.nav-collapse -->
+        {% endblock %}
+    </div>
+    {% endblock navbar %}
+
+    {% block messages %}
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">  <!-- singular -->
+            <a class="close" data-dismiss="alert">×</a>
+            {{ message|safe }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endblock %}
+
+    {% block splash %}
+    {% endblock splash %}
+    
+    {% block container %}
+    <div class="container">
+
+      <div class="starter-template">
+        <h1>New Project</h1>
+        <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
+      </div>
+
+    </div><!-- /.container -->
+    {% endblock container %}
+
+    <!-- Site footer -->
+    {% block footer %}
+      <!-- Some social button for contact will do -->
+      <a name="contact"></a>
+      <div class="container">
+            <div class="footer">
+        <div class="row">
+          <div class="col-lg-6">
+          <div class="col-lg-6">
+            <p><i class="fa fa-copyright fa-flip-horizontal"></i>
+ Progetto Save the Prince - {% now 'Y' %} <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a> 
+            </p> 
+          </div>
+          <div class="col-lg-6">
+          <p>Il codice sorgente del sito ed il database completo di tutti i dati sono disponibili su <a href="https://gitlab.com/wwf-tn/wwf-tn-prince"><i class="fa fa-github fa-flip-horizontal"></i></a></p>
+          </div>
+          </div>
+          <!--<div class="col-lg-6 text-right">
+            Vieni a trovarci su
+            <a href="https://www.facebook.com/wwftrentino"><i class="fa fa-facebook"></i> Facebook</a>
+          </div> -->
+        </div>
+            </div>
+      </div>
+
+
+    {% endblock %}
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'cookielaw/js/cookielaw.js' %}"></script>
+    <script src="https://browser.sentry-cdn.com/5.11.1/bundle.min.js" integrity="sha384-r7/ZcDRYpWjCNXLUKk3iuyyyEcDJ+o+3M5CqXP5GUGODYbolXewNHAZLYSJ3ZHcV" crossorigin="anonymous"></script>
+    {% block scripts %}
+    {% endblock scripts %}
+  </body>
+</html>

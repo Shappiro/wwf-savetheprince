@@ -1,0 +1,28 @@
+{% for specie in sitespecies_info %}
+<div class="col-lg-4">
+  <div class="text-center"><img src="{{specie.specieimages.first.image.url}}" class="img-circle centered" width="150" height="150" alt="profile pic">
+  <p><h5 class="heavy text-center"><strong><a href="#modal_{{specie.name_lower}}" data-toggle="modal">{{specie.vernacular_it}}</a></strong></h5>
+  </div>
+</div>
+  <!-- Modal -->
+<div id="modal_{{specie.name_lower}}" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">{{specie.vernacular_it}}</h4>
+        <h5 class="modal-title"><em>{{specie.specie}}</em></h5>
+      </div>
+      <div class="modal-body">
+        {{specie.description|safe}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endfor %}

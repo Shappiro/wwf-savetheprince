@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% load render_table from django_tables2 %}
+
+{% block extrahead %}
+	{{ block.super }}
+	 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+{% endblock %}
+
+{% block container %}
+	{% render_table site_specie_detail %}
+{% endblock %}

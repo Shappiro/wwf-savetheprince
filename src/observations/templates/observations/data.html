@@ -1,0 +1,473 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load static %}
+{% load leaflet_tags %}
+
+{% block extrahead %}
+	{{ block.super }}
+		{% leaflet_js %}
+		{% leaflet_css %}
+    	<link rel="stylesheet" href="{% static 'observations/css/L.Control.Basemap.css' %}" />
+		<link rel="stylesheet" href="//cdn.datatables.net/1.10.16/css/dataTables.bootstrap.css">		
+    	<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css" />
+		<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+		<!--[if IE 8]><script src="{% static "leaflet/eventlister.ie8.js" %}"></script><!--<![endif]-->
+		<!--[if lt IE 8]><script src="{% static "leaflet/eventlister.ie6-7.js" %}"></script><!--<![endif]-->
+{% endblock %}
+{% block styles %}
+	{{ block.super }}
+<style>
+    .leaflet-container {
+        width:  100%;
+        height: 600px;
+    }
+</style>
+{% endblock %}
+{% block title %}{{ block.super }}Mappa siti{% endblock %}
+
+{% block navbar-left %}
+  {% include "_navbar.html" with active_link="data" %}
+{% endblock %}
+
+{% block container %}
+<div class="text-page page-header">
+	<h1><a href="/">Mappa siti</a></h1>
+</div>
+
+
+<div class="text-page">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<h3>Siti di salvataggio</h3>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-2">
+				<h3> Filtri </h3>
+				<p>
+					<i class="fa fa-refresh"></i><a href='#a' id="filter_reset" style="text-decoration:none; color:inherit;"> Mostra tutto</a>
+				</p>
+				<p><strong>Nome sito</strong></p>
+				<select class="form-control" id="select_name" onchange="main_map_init(map)" name="state">
+				<optgroup>
+					<!--<option value="all">Mostra tutti</option>
+					<option disabled>---------------------------------------</option>
+					{% for sitename in sitenames %}
+					<option value="{{ sitename }}">{{ sitename }}</option>
+					{% endfor %} -->
+				</optgroup>
+				</select>   
+				<br>
+				<p><strong>Regione sito</strong></p>
+				<select class="form-control" id="select_regione" onchange="main_map_init(map)">
+				<optgroup>
+					<option value="all">Mostra tutti</option>
+					<option disabled>---------------------------------------</option>
+					{% for region in regions %}
+					<option value="{{ region }}">{{ region }}</option>
+					{% endfor %}
+				</optgroup>
+				</select>   
+				<br>
+				<p><strong>Provincia sito</strong></p>
+				<select class="form-control" id="select_provincia" onchange="main_map_init(map)">
+				<optgroup>
+					<option value="all">Mostra tutti</option>
+					<option disabled>---------------------------------------</option>
+					{% for province in provinces %}
+					<option value="{{ province }}">{{ province }}</option>
+					{% endfor %}
+				</optgroup>
+				</select>
+			</div>
+			<div class="col-md-10">			
+				{% leaflet_map "map" callback="main_map_init" %}
+			</div>
+		</div>
+	</div>
+</div>
+<div class"container">
+<div class="row" id="species"></div>
+</div>
+<div class="container" id="table-container">
+<div class="row row-no-padding" id='ultratable-container' style="visibility:hidden;"> 
+	<div class="col-sm-12 col-lg-12 col-md-12">
+	<table id="ultratable" class="table table-striped" style="width:100%" data-server-side="true" >
+		<thead>
+		<tr>
+			<th data-data="session_date">Data</th>
+			<th data-data="session_begin">Ora inizio</th>
+			<th data-data="session_end">Ora fine</th>
+			<th data-data="session_meteo">Meteo</th>
+			<th data-data="session_temperature">T (°C)</th>
+			<th data-data="specie_name">Specie</th>
+			<th data-data="sex">Sesso</th>
+			<!--<th data-data="state">Stadio</th>-->
+			<th data-data="direction">Direzione</th>
+			<th data-data="life">Mortalità</th>
+			<th data-data="n">N.</th>
+
+		</tr>
+		</thead>
+	</table>
+	</div>
+</div>
+<div class="container" id="table-container2">
+<div class="row row-no-padding" id='ultratable-container2' style="visibility:hidden;"> 
+	<div class="col-sm-12 col-lg-12 col-md-12">
+	<table id="ultratable2" class="table table-striped" style="width:100%" data-server-side="true" >
+		<thead>
+		<tr>
+			<th data-data="year">Anno</th>
+			<th data-data="specie">Specie</th>
+			<th data-data="sex">Sesso</th>
+			<th data-data="direction">Direzione</th>
+			<th data-data="alive">Mortalità</th>
+			<th data-data="n">N.</th>
+		</tr>
+		</thead>
+	</table>
+	</div>
+</div>
+
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript" src="{% static 'observations/js/L.Control.Basemap.js' %}"></script>
+<script src="//code.jquery.com/jquery-1.12.4.js"></script>
+<script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="//cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.flash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.print.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>
+
+<!-- SELECT2 FORMS-->
+<script>
+	$('#select_name').select2({
+		placeholder: 'Nome sito...',
+		minimumInputLength: 2,
+		//allowClear: true,
+		ajax: {
+			url: "{% url 'site-autocomplete' %}",
+			// this should be site-autocomplete-grouped, but it does not recognize q parameter URL...
+			dataType: "json",
+			type: "GET",
+			data: function (params) {
+				var query = {
+					q: params.term,
+				}
+				return query;
+			},
+		},
+		language: {
+			inputTooShort: function () {
+				return "Nome sito...";
+			}
+		},
+	});	
+</script>
+
+<!-- Map -->
+<script type="text/javascript">
+	var site_layer;
+	var map;
+
+    $("#filter_reset").on("click",function(){
+		var fields = ["provincia","regione"];
+		for(var i=0;i<fields.length;i++) {
+		var element = document.getElementById('select_' + fields[i]);
+		element.value = 'all';
+		}
+		$('#select_name').val(null).trigger('change');
+		setTimeout(() => {  
+			$('#ultratable-container').css('visibility','hidden');
+			$('#table-title').remove();
+			$('#ultratable-container2').css('visibility','hidden');
+			$('#table-title2').remove(); }, 
+		500);
+		main_map_init(map);
+
+    });
+
+	var initialView = [45.5004614, 10.1203557,7];
+    // Map initialization
+
+    $(window).on('map:init', function(e) {
+    	//map = L.map('main')
+    	map = e.originalEvent.detail.map; // Very important! Populates "map" object with real map, to be further referenced
+		//$("#map").addClass('sidebar-map');
+		//map.setView([initialView[0], initialView[1]], initialView[2]);
+		map.removeLayer(map._layers["26"]);
+		var basemaps = [
+			L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+				attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+			}),	
+			L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+				maxZoom: 19,
+				attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+			}),
+			L.tileLayer('//{s}.tile.stamen.com/toner/{z}/{x}/{y}.png', {
+				attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+				subdomains: 'abcd',
+				maxZoom: 20,
+				minZoom: 0,
+				label: 'Toner'
+			}),
+			L.tileLayer('//{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png', {
+				attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+				subdomains: 'abcd',
+				maxZoom: 16,
+				minZoom: 1,
+				label: 'Watercolor'
+			})
+		];
+		map.addControl(L.control.basemaps({
+			basemaps: basemaps,
+			tileX: 2,  // tile X coordinate
+			tileY: 1,  // tile Y coordinate
+			tileZ: 2   // tile zoom level
+		}));
+    });
+
+
+
+    // Inizializza la mappa con i dati dei siti
+	function main_map_init(map,options) {
+
+		    var fields = ["name","regione","provincia"];
+			if($('#select_name').select2('data').length!=0) {
+				fields.push('id');
+			}
+			var values = getFilterValues(fields)
+		    var filterURL = getFilterURL(values)
+
+			if(site_layer!=null) { site_layer.clearLayers(); }
+			console.log("{% url 'sites-list' %}?no_page" + ( filterURL != undefined ? filterURL : '' ));
+    		var promise  = $.getJSON("{% url 'sites-list' %}?no_page" + ( filterURL != undefined ? filterURL : '' ) );
+		    // Download GeoJSON via Ajax
+		    promise.then(function(data) {
+				//data = data.results;
+				site_layer = L.geoJson(data, {
+      			onEachFeature: function (feature, layer) {
+      				var lunghezza = feature.properties.lunghezza != null ? '<strong>Lunghezza: </strong>' + feature.properties.lunghezza : ' m';
+        			layer.bindPopup('<div><center><h3>'+feature.properties.name+'</h3><h5>' + lunghezza + ' metri</h5></center></div>');
+					layer.on('mouseover', function(event){
+						layer.openPopup();
+					});
+					layer.on('mouseout', function(event){
+						layer.closePopup();
+					});
+      			},
+				style: function style(feature) {
+					return {
+						color: feature.properties.attivo ? '#55FF33' : '#FF2700',
+					  };
+				}
+			});
+
+			// site_layer.setStyle({color: 'yellow'});
+		    map.fitBounds(site_layer.getBounds());
+		    site_layer.addTo(map);
+			site_layer.on('click',function(e) {
+				var sitename = e.layer.feature.properties.name;
+				getSiteData(sitename);
+			})
+		});
+	}
+</script>
+<!-- Data -->
+<script>
+$('#select_name').change(function(){
+	var sitename = $(this).val();
+	getSiteData(sitename);
+});
+
+function getSiteData(sitename) {
+	$.ajax({
+		url: "{% url 'site_species' %}",
+		data: {
+		  'site': sitename // sitename, value of option in select
+		},
+		success: function (data) {
+			//var reference = $.ajax({
+			//	url: "{% url 'sites-list' %}?name=" + sitename,
+			//	success: function(dataref) {
+			//		dataref = dataref.results.features[0].properties;
+			//		dataref = dataref != '' ? "<h3 class='text-center> Referente: <a href='mailto:" +
+			//			dataref.reference.user__email + "'>" + 
+			//			dataref.reference.user__name +" </a></h3> " : "<h3 class='text-center> Referente: nessuno </h3>";
+					
+			//		return dataref;
+			//	}
+			//})
+			data = data != '' ? "<h2 class='text-center'>" + sitename + "</h2></br><h3 class='text-center'> Specie salvate</h3></br>" + data : null;
+			//$("#species").html(reference + data);
+			$("#species").html(data);
+
+			$('#ultratable-container').css('visibility','');
+			$('#table-title').remove();
+			$('#table-container').prepend("<h3 id='table-title'>Dati di dettaglio");
+			var url = "{% url 'observation-list' %}?search=" + sitename + "&format=datatables";
+			$('#ultratable').css('visibility','');
+			if ( $.fn.DataTable.isDataTable( '#ultratable' ) ) {
+				$('#ultratable').DataTable().clear().destroy();
+			};
+			$('#ultratable').DataTable({
+				serverSide: true,
+				searching: false,
+				ordering:false,
+				responsive: true,
+				lengthMenu: [[10, 25, 100,-1], [10, 25, 100, "Tutti"]],
+    			pageLength: 10,
+				"ajax": {
+					"url": url,
+				},
+				"language": {
+					"url": "https://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Italian.json"
+				},
+				"columnDefs": [
+					{	
+						// Inizio
+						"render": function ( data, type, row ) {
+							return ((row.session_begin == row.session_end) ? 'n.d.' : row.session_begin);
+						},
+						"targets": 1
+					},
+					{	
+						// Fine
+						"render": function ( data, type, row ) {
+							return ((row.session_begin == row.session_end) ? 'n.d.' : row.session_end);
+						},
+						"targets": 2
+					},								
+					{	
+						// Per il sesso
+						"render": function ( data, type, row ) {
+							return ((data == 'F') ? 'Femmine' : (data == 'M') ? 'Maschi' : 'Indeterminati');
+						},
+						"targets": 6
+					},
+					{	
+						// Per la mortalità
+						"render": function ( data, type, row ) {
+							return ((data == true) ? 'Vivi' : 'Morti');
+						},
+						"targets": 8
+					},					
+				],			
+        		dom: 'Blfrtip',				
+				buttons: [
+					{extend: 'copy',text: 'Copia'},
+					{extend: 'excel',text: 'Esporta in .xls'},
+					{extend: 'csv',text: 'Esporta in .csv'},
+					{extend: 'pdf',text: 'Esporta in .pdf'}					
+				]			
+			});
+		}
+	});
+	$.ajax({
+		url: "{% url 'site_species' %}",
+		data: {
+		  'site': sitename // sitename, value of option in select
+		},
+		success: function (data) {
+
+			$('#ultratable-container2').css('visibility','');
+			$('#table-title2').remove();
+			$('#table-container2').prepend("<h3 id='table-title2'>Dati riassuntivi</h3>");
+			var url = "{% url 'sitesummary-list' %}?name=" + sitename + "&format=datatables";
+			$('#ultratable2').css('visibility','');
+			if ( $.fn.DataTable.isDataTable( '#ultratable2' ) ) {
+				$('#ultratable2').DataTable().clear().destroy();
+			};
+			$('#ultratable2').DataTable({
+				serverSide: false,
+				ordering: false,
+				searching: false,
+				responsive: true,
+				lengthMenu: [[10, 25, 100, -1], [10, 25, 100, "Tutto"]],
+    			pageLength: 10,
+				"ajax": {
+					"url": url,
+				},
+				"language": {
+					"url": "https://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Italian.json"
+				},
+				"columnDefs": [
+					{	
+						// Per il sesso
+						"render": function ( data, type, row ) {
+							return ((data == 'F') ? 'Femmine' : (data == 'M') ? 'Maschi' : 'Indeterminati');
+						},
+						"targets": 2
+					},
+					{	
+						// Per la mortalità
+						"render": function ( data, type, row ) {
+							return ((data == true) ? 'Vivi' : 'Morti');
+						},
+						"targets": 4
+					},					
+				],					
+        		dom: 'Blfrtip',				
+				buttons: [
+					{extend: 'copy',text: 'Copia'},
+					{extend: 'excel',text: 'Esporta in .xls'},
+					{extend: 'csv',text: 'Esporta in .csv'},
+					{extend: 'pdf',text: 'Esporta in .pdf'}					
+				]			
+			});
+		}
+	});
+}
+</script>
+<!-- Utilities -->
+<script type="text/javascript">
+    /**
+    * Returns the values from the filter's selects.
+    * #param {string[]} fields to explore 
+    * @returns {array[]} of values.
+    */
+    function getFilterValues(fields) {
+      // fetch value of all non-all filter fields
+      var values = [[],[]];
+      // Build array of values which comprise the filter
+      for(var i=0;i<fields.length;i++) {
+        if(fields[i]=="altitudine") {
+          var value = $("#select_" + fields[i]).data("value");
+        } else {
+          var value = $("#select_" + fields[i]).val();
+        };
+
+        if(value != 'all' && value!= ''){
+          values[0].push(fields[i]);
+          values[1].push(value);
+        } 
+      }
+    return values;
+    }
+    /**
+     * Builds a filtering property for URL based on input values.
+     * 
+     * @param {string[fields][values]}
+     * @returns {string} of URL part.
+     */
+    function getFilterURL(values) {
+      var URL;
+      for(var i=0;i<values[0].length;i++) {
+        if(i==0) {
+            URL = values[1][i] == null ? '' : "&" + values[0][i] + "=" + values[1][i]
+        } else {
+            URL = values[1][i] == null ? '' : URL + "&" + values[0][i] + "=" + values[1][i]
+        }
+      }
+      return URL;
+    }
+</script>
+{% endblock scripts %}

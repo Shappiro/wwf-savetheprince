@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load thumbnail %}
+
+{% block title %}{{ block.super }}Non autorizzat*{% endblock %}
+
+{% block navbar-left %}
+  {% include "_navbar.html"%}
+{% endblock %}
+
+
+{% block container %}
+<div class="text-page page-header">
+  <h1><a href="/">Non autorizzat*!</a></h1>
+</div>
+
+
+<div class="text-page">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <strong>Non sei autorizzat* a vedere questa pagina! Se pensi dovresti esserlo, <a href="mailto:salvataggioanfibi@gmail.com">scrivici!</a></strong>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock container %}

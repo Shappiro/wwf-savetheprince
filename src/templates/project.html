@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ block.super }}Il progetto{% endblock %}
+
+{% block navbar-left %}
+  {% include "_navbar.html" with active_link="project" %}
+{% endblock %}
+
+
+{% block container %}
+<div class="text-page page-header">
+	<h1><a href="/">Il progetto</a></h1>
+</div>
+<div class="text-page">
+  <div class="container">
+  	<div class="row">
+	  	<h5>Dedicato a</h5>
+		<em>
+		<q>Tutto questo non sarebbe stato possibile senza l'impegno e l'ispirazione di un grande naturalista, che ora ci osserva dal mondo dei suoi migliori amici, rane e rospi: Enrico Romanazzi.</q></em>
+		<hr>
+		<h5>I motivi</h5>
+		<p>L’attuale crisi ecologica di stampo antropico che una percentuale consistente di viventi sta attraversando, rende indispensabile intraprendere urgenti azioni di conservazione per favorirne la tutela. Il Progetto Save the prince si propone di salvaguardare localmente una classe particolarmente colpita da declini ed estinzioni a livello globale: gli Anfibi (41% delle specie sono minacciate secondo la <a href="https://www.iucn.org/iucn-red-list-threatened-species-test-single-page" target='_blank'>IUCN Red List</a>). Vi sono rappresentate specie inserite a vario grado in categorie di rischio IUCN ad esempio il rospo comune (<em>Bufo bufo</em>) rientra come Vulnerabile nella <a href="http://savetheprince.net/media/pdf_importanti/comitato_iucn_lista_rossa_dei_vertebrati_italiani.pdf" target='_blank'>Lista Rossa dei Vertebrati Italiani</a> e il tritone alpestre (<em>Ichtyosaura alpestris</em>) si trova nella direttiva Habitat.</p>
+		<p>Oltre al loro valore biologico intrinseco, gli Anfibi sono particolarmente importanti per l’azione regolatrice che esercitano nelle comunità animali di cui fanno parte, per la consistente biomassa che rappresentano e come indicatori di qualità ambientale (in quanto per lo più legati agli ambienti con acque pulite in cui riprodursi): elementi che purtroppo favoriscono anche l'esposizione a molti problemi. Tra questi spicca negativamente la scomparsa, modifica e frammentazione delle zone di rifugio e riproduzione. In Italia inoltre c’è una rete stradale molto fitta, ciò comporta numerosi investimenti stradali lungo i tratti attraversati dagli animali per andare o tornare dalle zone riproduttive (stagni, pozze d’alpeggio, laghi, paludi etc.). Localmente questa fonte antropica di mortalità diretta ha effetti particolarmente negativi sulle popolazioni delle specie di anfibi che effettuano migrazioni, causando anche l’estinzione di intere popolazioni in tempi storici. Il presente progetto mira a limitare quanto più possibile questo fenomeno.</p>
+
+		<h5>Metodi</h5>
+		Intendiamo perseguire questo importante obiettivo di conservazione tramite molteplici azioni, di salvaguardia diretta, indiretta, di educazione ambientale e citizen science, in particolare, intraprenderemo azioni di:
+		<ul>
+    	<li><strong>divulgazione</strong>: serate volte a sensibilizzare la popolazione dei comuni interessati riguardo il problema degli investimenti a danno degli anfibi, cogliendo l'occasione per informare sulla ragguardevole varietà e interessanti caratteristiche di questi esseri viventi</li>
+    	<li><strong>conservazione diretta</strong>: per facilitare la salvaguardia degli anfibi, le barriere utili alla canalizzazione della migrazione attualmente presenti verranno regolarmente controllate, ed eventualmente manutentate in accordo con le amministrazioni locali normalmente preposte alla loro cura, così come verranno posati nuovi tratti ove se ne evidenzierà la necessità, in base ad una attenta analisi dei costi/benefici considerando la totalità dei siti di migrazione. L'attività di salvataggio degli anfibi, che consiste principalmente nello spostamento degli stessi dalle strade, si svolgerà prevalentemente in orario notturno e conterà sul lavoro volontario di partecipanti adeguatamente formati e muniti di tutto il necessario per operare in sicurezza</li>
+    	<li><strong>ricerca</strong>: tutti i dati raccolti durante le serate di controllo della migrazione (es: numero di specie, sex-ratio, numero di morti) verranno inseriti nel presente sito web a cui è collegato un database standardizzato, appositamente creato per facilitare la successiva analisi dei dati. Questo sistema di analisi permetterà di avere sempre aggiornati i dati e di poterli usare per dimostrare l’importanza dell’attività di volontariato per la tutela degli anfibi e di tenere costantemente monitorato l’andamento delle popolazioni, potendo così mettere in atto strategie diverse nel caso le condizioni in un sito cambino nel corso di un certo periodo. I dati avranno un valore scientifico che neanche le Amministrazioni Pubbliche potranno più contraddire o rifiutare di considerare.</li>
+		</ul>
+	</div>
+  </div>
+</div>
+
+</div>
+{% endblock %}

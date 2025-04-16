@@ -1,0 +1,48 @@
+{% extends "accounts/auth_base.html" %}
+{% block extrahead %}
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    {{ form.media }}
+{% endblock extrahead %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ block.super }}Registrati{% endblock %}
+
+{% block form_heading %}Registrati{% endblock %}
+
+{% block form %}
+  {% crispy form %}
+
+  <div class="form-message">
+    <p>
+      Già registrato? <a href="{% url 'accounts:login' %}">Accedi!</a> Oppure, <a href="{% url 'home' %}">torna alla homepage</a>.
+    </p>
+  </div>
+{% endblock form %}
+
+{% block scripts %}
+<script>
+$();
+$('#div_id_name').hide(); // ugly hack
+
+</script>
+<script>
+(function($) {
+    $('#add-form').click(function() {
+        var index = $('#id_inline_test_models-TOTAL_FORMS').val()
+        var newTable = $('#id_inline_test_models-__prefix__-DELETE').parents('table').clone()
+        newTable.find(':input').each(function() {
+            for (attr of ['name', 'id'])
+                $(this).attr(
+                    attr,
+                    $(this).attr(attr).replace('__prefix__', index)
+                )
+        })
+        newTable.insertBefore($(this))
+        $('#id_inline_test_models-TOTAL_FORMS').val(
+            parseInt($('#id_inline_test_models-TOTAL_FORMS').val()) + 1
+        )
+        newTable.slideDown()
+    })
+})($)
+</script>
+{% endblock scripts %}  

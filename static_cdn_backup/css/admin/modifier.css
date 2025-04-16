@@ -1,0 +1,12 @@
+input[name='_addanother'] {
+    visibility: hidden !important;
+}
+
+input[name='_continue'] {
+    visibility: hidden !important;
+}
+
+.speciedetail>h2 {
+    background: green;
+    background-color: green;
+}

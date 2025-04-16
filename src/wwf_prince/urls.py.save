@@ -1,0 +1,46 @@
+
+from django.contrib import admin
+from django.conf import settings
+from django.conf.urls.static import static
+from django.urls import include, path,re_path
+import profiles.urls
+import accounts.urls
+import observations.urls
+import news.urls
+from . import views
+from filebrowser.sites import site
+
+# Personalized admin site settings like title and header
+admin.site.site_title = 'Amministrazione sito Save the Prince'
+admin.site.site_header = 'Amministrazione sito'
+
+urlpatterns = [
+    path('', views.HomePage.as_view(), name='home'),
+    path('about/', views.AboutPage.as_view(), name='about'),
+    path('users/', include(profiles.urls)),
+    path('admin/', admin.site.urls),
+    path('project/', views.ProjectPage.as_view(), name='project'),
+    path('data/', views.DataPage.as_view(), name='data'),
+    path('contribute/', views.ContributePage.as_view(), name='contribute'),
+    path('tinymce/', include('tinymce.urls')),
+    path('admin/filebrowser/', site.urls),
+    path('', include(accounts.urls)),
+    path('observations/', include(observations.urls)),
+    re_path(r'^posts/', include(news.urls)),
+]
+
+# User-uploaded files like profile pics need to be served in development
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+if settings.DEBUG:
+    urlpatterns += static(
+        settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(
+        settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    
+# Include django debug toolbar if DEBUG is on
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns += [
+        path('__debug__/', include(debug_toolbar.urls)),
+    ]

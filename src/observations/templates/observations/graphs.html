@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load static %}
+
+{% block title %}{{ block.super }}Grafici{% endblock %}
+
+{% block navbar-left %}
+  {% include "_navbar.html" with active_link="graphs" %}
+{% endblock %}
+
+{% block container %}
+<div class="text-page page-header">
+	<h1><a href="/">Grafici</a></h1>
+</div>
+
+
+<div class="text-page">
+	<div class="container">
+		<div class="row text-center">
+			<div class="col-md-12">
+				<h3>Totali per specie</h3>
+			</div>
+            {%for specie in species%}
+            <div class="col-md-4">
+                <h5><em>{{specie.specie__specie}}</em></h5>
+                <canvas id="chart_{{specie.name_lower}}" width="200" height="200">
+                </canvas>                
+            </div>
+            {%endfor%}
+		</div>
+        <div class="row text-center">
+            <div class="col-md-12">
+                <h3>Per sito</h3>
+            </div>
+            <div class="col-md-5">
+            </div>
+            <div class="col-md-2">
+				<select class="form-control" id="select_site">
+				<optgroup>
+					<option value="all">Seleziona un sito</option>
+					<option disabled>---------------------------------------</option>
+					{% for site in sitenames %}
+					<option value="{{ site.name }}">{{ site.name }}</option>
+					{% endfor %}
+				</optgroup>
+				</select>                 
+            </div>
+            <div class="col-md-3">
+            </div>
+        </div>
+        <div class="row text-center" id="siteresult">
+        </div>
+    </div>
+</div>
+{%endblock%}
+
+{% block scripts %}
+    {{block.super}}
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+    {%for specie in species%}
+    <script>
+    var ctx_context_{{specie.name_lower}} = document.getElementById("chart_{{specie.name_lower}}").getContext('2d');
+    $.ajax({
+        method: "GET",
+        url: "{% url 'chart' %}?specie={{specie.specie__specie}}&format=json",
+        success: function(data){
+            new Chart(
+                ctx_context_{{specie.name_lower}},
+                {
+                    type: 'bar',
+                    data: data[0],
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero:true,
+                                    callback: function(value) {if (value % 1 === 0) {return Math.round(value);}}
+                                }
+                            }],                          
+                        }
+                    }
+                });
+        },
+        error: function(error_data){
+            console.log(error_data);
+        }
+    });
+    </script>
+    {%endfor%} 
+    <script>
+    $("#select_site").change(function(){
+        var site = $(this).val();
+        $.ajax({
+            method: "GET",
+            url: "{% url 'chart' %}?site=" + site + "&format=json",
+            success: function(data){
+                //data = data[0];
+                $("#siteresult").empty();
+                $("#siteresult").append("<h3> Risultati per il sito di " + site + "</h3>");
+                for(var i=0;i<data.length;i++) {
+                    var ctx_name = data[i].specie.replace(" ","_").toLowerCase() + '_' + site.toLowerCase();
+                    $("#siteresult").append(
+                        "<div class='col-md-3'>" +
+                        "    <h5><em>" + data[i].specie + "</em></h5>"+
+                        "    <canvas id='" + ctx_name + "' width='200' height='200'>" + 
+                        "    </canvas>" +                
+                        "</div>"             
+                    );
+                    new Chart(
+                        document.getElementById(ctx_name).getContext('2d'),
+                        {
+                            type: 'bar',
+                            data: data[i],
+                            options: {
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero:true,
+                                            callback: function(value) {if (value % 1 === 0) {return Math.round(value);}}
+                                        }
+                                    }],                          
+                                }
+                            }
+                    });
+                }
+            }
+        });
+    });
+    </script>
+{%endblock%}

@@ -1,0 +1,31 @@
+{% extends "rest_framework/base.html" %}
+{% load i18n %}
+
+{% block title %}{% if name %}{{ name }} – {% endif %}API Save the Prince{% endblock %}
+{% block style %}
+    {{ block.super }}
+    <style>
+        .str {
+            color: #44B78B !important;
+        }
+        .navbar {
+            background-color: #0C4B33 !important;
+            border-top-color: #44B78B !important;
+        }
+        .navbar .dropdown-menu li a, .navbar .dropdown-menu li {
+            color: #44B78B !important;
+        }        
+    </style>
+{% endblock %}
+{% block branding %}
+    <a class="navbar-brand" rel="nofollow" href="#">
+        <img src="https://savetheprince.net/media/admin-interface/logo/logo-big.png" height=20>
+    </a>
+    <a class="navbar-brand" rel="nofollow" href="#">
+        API Save the Prince
+    </a>
+    <a class="navbar-brand" rel="nofollow" href="{% url 'home' %}">
+        Torna al sito
+    </a>
+
+{% endblock %}

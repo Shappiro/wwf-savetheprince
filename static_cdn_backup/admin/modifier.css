@@ -1,0 +1,7 @@
+input[name='_addanother'] {
+    visibility: hidden !important;
+}
+
+input[name='_continue'] {
+    visibility: hidden !important;
+}

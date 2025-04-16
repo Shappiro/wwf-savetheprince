@@ -1,0 +1,50 @@
+<li {% if active_link == "home" %}class="active"{% endif %}><a href="{% url 'home' %}">Home</a></li>
+
+<li class="dropdown" {% if active_link == "news" %}class="active"{% endif %}>
+	<a href="{% url 'project' %}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Il progetto<span class="caret"></span></a>
+	<ul class="dropdown-menu">
+		<li><a href="{% url 'project' %}">Obiettivi</a></li>	
+		<li><a href="{% url 'contribute' %}">Contribuisci</a></li>	
+		<li><a href="{% url 'manual' %}">Il manuale</a></li>
+		<li><a href="{% url 'biblio' %}">Bibliografia</a></li>
+		<li><a href="{% url 'faq' %}">Domande frequenti</a></li>
+		<li><a href="{% url 'contacts' %}">Contatti</a></li>
+	</ul>
+</li>
+
+<li class="dropdown" {% if active_link == "about" %}class="active"{% endif %}>
+	<a href="{% url 'about' %}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Chi siamo<span class="caret"></span></a>
+	<ul class="dropdown-menu">
+		<li><a href="{% url 'about' %}#associations">Le Associazioni</a></li>	
+		<li><a href="{% url 'about' %}#reference">I referenti</a></li>
+		<!--<li><a href="{% url 'about' %}#volunteers">I volontari</a></li>-->
+		<li><a href="{% url 'sites' %}">I siti di salvataggio</a></li>	
+	</ul>
+</li>
+
+<li {% if active_link == "friends" %}class="active"{% endif %}><a href="{% url 'friends' %}">I nostri amici</a></li>
+
+<li class="dropdown" {% if active_link == "data" %}class="active"{% endif %}>
+	<a href="{% url 'data' %}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Mappe e analisi<span class="caret"></span></a>
+	<ul class="dropdown-menu">
+		<li><a href="{% url 'data' %}">Mappa siti</a></li>	
+		<li><a href="{% url 'graph' %}">Grafici</a></li>	
+	</ul>
+</li>
+
+<li class="dropdown" {% if active_link == "news" %}class="active"{% endif %}>
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Novità<span class="caret"></span></a>
+	<ul class="dropdown-menu">
+		<li><a href="{% url 'news' %}">Le ultime</a></li>
+		{% if user.is_authenticated %}
+			{% if perms.news.add_post %}
+			<li><a href="{% url 'post_new' %}">Nuovo post</a></li>
+			{% endif %}
+		{% endif %}
+		<li><a href="{% url 'journals' %}">Dicono di noi</a></li>
+
+	</ul>
+</li>
+
+<li><a href="https://www.youtube.com/@savetheprince"><i class="fa fa-youtube-play"></i>Rospitube</a>
+</li>

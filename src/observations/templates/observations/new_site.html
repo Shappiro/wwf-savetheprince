@@ -1,0 +1,8 @@
+<div class="well col-md-6">
+	<p>Inserisci un nuovo sito</p>
+	<form action="" method="post">
+		{% csrf_token %} <!-- Limits form attacks through forgery -->
+		{{ form|crispy }}
+		<button type="submit">Inserisci</button>
+	</form>
+</div>

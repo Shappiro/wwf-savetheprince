@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ block.super }}Modifica novità{% endblock %}
+
+{% block navbar-left %}
+  {% include "_navbar.html" with active_link="news" %}
+{% endblock %}
+
+{% block scripts%}
+	{{block.super}}
+	
+
+{% endblock %}
+
+{% block container %}
+<div class="text-page page-header">
+	<h1><a href="/">Modifica novità</a></h1>
+</div>
+<div class="content container">
+    <div class="row">
+        <div class="col-md-10">
+		    <form method="POST" class="post-form">
+
+		    	{% csrf_token %}
+				{{form.media}}
+		        {{ form.as_p }}
+		        <button type="submit" class="save btn btn-default">Salva</button>
+		    </form>
+		</div>
+	</div>
+</div>
+
+{% endblock container %}

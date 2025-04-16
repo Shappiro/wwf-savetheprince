@@ -1,0 +1,19 @@
+.sidebar.sidebar-left.leaflet-touch {
+	top: 7.9em;
+	bottom: 1em;
+	left: 2em;
+	max-width: 15em;
+	}
+/*
+.sidebar.sidebar-left.leaflet-touch.collapsed {
+	width: 3em;
+}
+*/
+
+.sidebar-content {
+	padding-right: 1em;
+}
+
+.sidebar-pane {
+	min-width: 17em;
+}

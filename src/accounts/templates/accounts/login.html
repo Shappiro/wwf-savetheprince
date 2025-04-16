@@ -1,0 +1,18 @@
+{% extends "accounts/auth_base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}{{ block.super }}Entra{% endblock %}
+
+{% block form_heading %}Entra{% endblock %}
+
+{% block form %}
+  {% crispy form %}
+
+  <div class="form-message">
+    <p>
+      Non hai un account? Per inserire dati, è necessario! <a href="{% url 'accounts:signup' %}">Registrati</a>, oppure <a href="{% url 'home' %}">torna alla homepage</a>.
+    </p>
+  </div>
+{% endblock form %}
+

@@ -1,0 +1,33 @@
+<div class="col-md-3 col-sm-3">
+    <div id="myCarousel" class="carousel slide carousel-fade" data-ride="carousel" style="height: 170px;width:170px;">
+      <!-- Indicators -->
+      <!--<ol class="carousel-indicators">
+        {% for association in associations %}
+        <li data-target="#myCarousel" data-slide-to="{{ forloop.counter0 }}" class="active"></li>
+        {% endfor %}
+      </ol>-->
+      <!-- Wrapper for slides -->
+      <div class="carousel-inner">          
+      {% for association in associations %}
+      {% if forloop.counter0 == 0 %}
+      <div class="item active" class="centered" style="height: 170px;width:170px;">
+        <img class="img-responsive" src="{% get_media_prefix %}{{association.image}}" height="170">
+      </div>
+      {% else %}
+      <div class="item" class="centered" style="height: 170px;width:170px;">
+        <img class="img-responsive" src="{% get_media_prefix %}{{association.image}}" height="170">
+      </div>
+      {% endif %}
+      {% endfor %}
+      </div>
+      <!-- Carousel controls -->
+      <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left"></span>
+        <span class="sr-only">Precedente</span>
+      </a>
+      <a class="right carousel-control" href="#myCarousel" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right"></span>
+        <span class="sr-only">Prossimo</span>
+      </a>
+    </div>
+  </div>

@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ block.super }}Home{% endblock %}
+
+{% block navbar-left %}
+  {% include "_navbar.html" with active_link="home" %}
+{% endblock %}
+
+{% block splash %}
+<div class="row">
+  <div class="corporate-jumbo">
+    <div class="row">
+        <div class="col-md-2 col-xs-12">
+          <img src="https://savetheprince.net/media/loghi/verticale/logo_verticale_bianco.png" style="max-width:150px;" />
+        </div>
+        <div class="col-md-10 col-xs-12">
+          <h1 style="font-size:80px !important;">{% include "_brandname.html" %}</h1>
+          <h4 style="color:white !important;">Progetto coordinato sovraregionale di salvataggio e protezione degli anfibi</h4>
+          <!--<a class="btn btn-success" href="{% url 'accounts:signup' %}" role="button">Registrati</a>-->
+        </div>
+    </div>
+  </div>
+</div>
+{% endblock splash %}
+
+{% block container %}
+<a name="about"></a>
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-4 text-center">
+      <h3>Piccoli amici</h3>
+      <a href="{% url 'friends' %}"><img height=200 src="{{MEDIA_URL}}img_website/home/rane.jpeg" style="border-radius: 50%;"></a>
+      <br>
+      <br>
+      <p>Rane, rospi, salamandre, tritoni: in una parola, <strong>anfibi</strong>! Variegati e bellissimi e quasi tutti molto legati all'acqua, molte specie compiono ogni primavera <strong>importanti migrazioni verso stagni e raccolte d'acqua per riprodursi</strong>.</p>
+    </div>
+    <div class="col-lg-4 text-center">
+      <h3>Il grave pericolo</h3>
+      <a href="{% url 'project' %}"><img height=200 src="{{MEDIA_URL}}img_website/home/rospo_auto.jpeg" style="border-radius: 50%;"></a>
+      <br>
+      <br>
+      <p>Purtroppo, sono anche i vertebrati terrestri più a rischio: il <strong>40% delle loro specie è in pericolo di estinzione</strong>, anche a causa dell'<strong>investimento stradale durante le migrazioni</strong>.</p>
+    </div>
+    <div class="col-lg-4 text-center">
+      <h3>Un grande aiuto</h3>
+      <a href="{% url 'contribute' %}"><img height=200 src="{{MEDIA_URL}}img_website/home/rospo_mano.jpeg" style="border-radius: 50%;"></a>
+      <br>
+      <br>
+      <p>Qua entriamo in gioco <strong>noi tutti</strong>: monitorando assiduamente i siti (tratti stradali) dove sappiamo che durante la primavera avvengono migrazioni massicce, <strong>intercettiamo per tempo il movimento degli anfibi spostandoli da un lato all'altro della strada</strong>, in tutta sicurezza. Semplice, ed efficace.</p>
+    </div>
+
+  </div>
+</div>
+
+{% endblock container %}
+
+{% block scripts %}
+<script src="{% static 'site/js/site.js' %}"></script>
+{% endblock scripts %}
+

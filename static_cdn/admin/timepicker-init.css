@@ -1,0 +1,12 @@
+@media only screen and (min-device-width: 1000px) {
+    .clock-timepicker-popup {
+        position: relative !important;
+        top: 10px !important;
+    }
+}
+
+@media only screen and (max-device-width: 480px) {
+    .clock-timepicker-popup {
+        top: 5em !important;
+    }
+}
